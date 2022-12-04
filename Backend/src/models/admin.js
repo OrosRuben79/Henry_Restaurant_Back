@@ -1,7 +1,7 @@
 const {Schema, model } = require('mongoose');
 
 const AdminSchema = Schema({
-    nombre: {
+    name: {
         type: String,
         required: [true, 'El nombre es obligatorio']
     },
@@ -9,31 +9,13 @@ const AdminSchema = Schema({
         type: String,
         required: [true, 'La contraseña es obligatoria']
     },
-    correo: {
+    email: {
         type: String,
         required: [true, 'El correo es obligatorio'],
         unique: true
     },
 
-
 });
-
 
 module.exports = model('Admin', AdminSchema);
 
-
-
-
-
-
-
-
-
-
-
-adminName
-"kossito"
-password
-"fdgfrherher568484wfef"
-status
-true
