@@ -1,43 +1,52 @@
 const {Schema, model } = require('mongoose');
 
-const RecetaSchema = Schema({
-    nombre: {
+const FootSchema = Schema({
+    name: {
         type: String,
         required: [true, 'El nombre es obligatorio'],
         unique: true,
         uppercase: true
     },
-    estado: {
+    state: {
         type: Boolean,
         default: true,
         required: true
     },
-    usuario: {
+    user: {
         type: Schema.Types.ObjectId,
-        ref: 'Usuario',
+        ref: 'User',
         required: true
     },
     precio: {
         type: Number,
         default: 0
     },
-    categoria: {
+    type: {
         type: Schema.Types.ObjectId,
-        ref: 'Categoria',
+        ref: 'types',
         required: true
     },
-    descripcion: { type: String },
+    lenguage:{
+        es:{
+           nombre:{type: String},
+           tipo:{ref: 'types'},
+           descripcion: { type: String },
+        },
+        en:{
+            name:{type: String},
+            type:{ref: 'types'},
+            description: { type: String },
+
+        }
+
+    },
+    description: { type: String },
     disponible: { type: Boolean, default: true },
     img: { type: String }
 
 
 });
 
-RecetaSchema.methods.toJSON = function(){
-    const { __v,estado, ...data } = this.toObject();
-    
-    return data;
-}
 
 
-module.exports = model('Receta', RecetaSchema);
+module.exports = model('Foot', FootSchema);
