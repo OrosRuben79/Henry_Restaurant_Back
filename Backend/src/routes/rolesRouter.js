@@ -1,7 +1,7 @@
 const { Router } = require('express');
-const { getFoods } = require('../controllers/foodsController')
+const { getRoles } = require('../controllers/rolesController')
 const router = Router();
 
-router.get('/', getFoods)
+router.get('/', getRoles)
 
 module.exports = router
