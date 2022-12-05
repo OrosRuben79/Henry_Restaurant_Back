@@ -11,6 +11,7 @@ const ordersRouter = require('./ordersRouter');
 const router = Router();
 
 router.use('/users', usersRouter)
+router.use('/foods', foodsRouter)
 router.use('/reviews', reviewsRouter)
 router.use('/admins', adminsRouter)
 router.use('/roles', rolesRouter)
