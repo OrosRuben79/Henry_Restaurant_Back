@@ -1,6 +1,8 @@
-const server = require("./src/app")
+require("dotenv").config();
+const server = require("./src/app");
+const { dbConnection } = require("./src/dataBase/config");
 
-
-
-    server.listen(3001, () => {  console.log('%s listening at 3001'); });
- 
+dbConnection();
+server.listen(3001, () => {
+  console.log("%s listening at 3001");
+});
