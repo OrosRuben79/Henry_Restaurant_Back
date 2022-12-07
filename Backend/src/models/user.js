@@ -21,7 +21,7 @@ const UserSchema = Schema({
     rol: {
         type: String,
         required: true,
-        enum: ['ADMIN_ROLE', 'USER_ROLE', 'VENTAS_ROLE']
+        enum: ['ADMIN_ROLE', 'USER_ROLE', 'VIP_ROLE']
     },
     state: {
         type: Boolean,
@@ -30,6 +30,10 @@ const UserSchema = Schema({
     google: {
         type: Boolean,
         default: false
+    },
+    country:{
+        type: String,
+        require: true
     }
 });
 

@@ -12,7 +12,7 @@ const getUser = async (req, res) => {
 
 const postUser = async (req, res) => {
   try {
-    const { fullName, email, password, img } = req.body;
+    const { fullName, email, password, img, country } = req.body;
     const rol = "USER_ROLE";
 
     const salt = bcryptjs.genSaltSync();
@@ -23,6 +23,7 @@ const postUser = async (req, res) => {
       password: cripPasworrd,
       img,
       rol,
+      country
     });
 
     res.status(200).json(user);
