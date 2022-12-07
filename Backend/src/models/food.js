@@ -1,6 +1,6 @@
 const {Schema, model } = require('mongoose');
 
-const FootSchema = Schema({
+const FoodSchema = Schema({
     name: {
         type: String,
         required: [true, 'El nombre es obligatorio'],
@@ -12,34 +12,35 @@ const FootSchema = Schema({
         default: true,
         required: true
     },
-    user: {
+    admin: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
-    precio: {
+    price: {
         type: Number,
         default: 0
     },
     type: {
-        type: Schema.Types.ObjectId,
-        ref: 'types',
+        // type: Schema.Types.ObjectId,
+        type: String,
+        // ref: 'types',
         required: true
     },
-    lenguage:{
-        es:{
-           nombre:{type: String},
-           tipo:{ref: 'types'},
-           descripcion: { type: String },
-        },
-        en:{
-            name:{type: String},
-            type:{ref: 'types'},
-            description: { type: String },
+    // lenguage:{
+    //     es:{
+    //        nombre:{type: String},
+    //        tipo:{ref: 'types'},
+    //        descripcion: { type: String },
+    //     },
+    //     en:{
+    //         name:{type: String},
+    //         type:{ref: 'types'},
+    //         description: { type: String },
 
-        }
+    //     }
 
-    },
+    // },
     description: { type: String },
     disponible: { type: Boolean, default: true },
     img: { type: String }
@@ -49,4 +50,4 @@ const FootSchema = Schema({
 
 
 
-module.exports = model('Foot', FootSchema);
+module.exports = model('Food', FoodSchema);
