@@ -33,7 +33,7 @@ const UserSchema = Schema({
     },
     country:{
         type: String,
-        require: true
+        required: true
     }
 });
 
