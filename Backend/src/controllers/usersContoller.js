@@ -12,14 +12,13 @@ const getUser = async (req, res) => {
 
 const postUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, img } = req.body;
+    const { fullName, email, password, img } = req.body;
     const rol = "USER_ROLE";
 
     const salt = bcryptjs.genSaltSync();
     const cripPasworrd = bcryptjs.hashSync(password, salt);
     const user = await User.create({
-      firstName, 
-      lastName,
+      fullName, 
       email,
       password: cripPasworrd,
       img,
