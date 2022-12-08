@@ -1,6 +1,6 @@
 const bcryptjs = require("bcryptjs");
-const { generatrJWT } = require("../helpers/generate-jwt");
-const { googleVerify } = require("../helpers/google-verify");
+const { generateJWT } = require("../helpers/generate-jwt");
+const { jwtDecode } = require("../helpers/jwtDecode");
 const User = require("../models/user");
 
 const login = async (req, res) => {
@@ -43,25 +43,22 @@ const login = async (req, res) => {
 
 const googleSingIn = async (req, res) => {
   const { id_token } = req.body;
-
   try {
-    const { email, name, img } = await googleVerify(id_token);
+    const { email, name, img } = jwtDecode(id_token);
 
     let user = await User.findOne({ email });
 
     if (!user) {
       //Tengo que crearlo
       const data = {
-        name,
+        fullName: name,
         email,
         password: "noPasword",
         img,
         google: true,
         rol: "USER_ROLE",
       };
-
-      user = new User(data);
-      await User.save();
+      user = await User.create(data);
     }
 
     // Si el usurario en DB
@@ -72,7 +69,7 @@ const googleSingIn = async (req, res) => {
     }
 
     // Generar el JWT
-    const token = await generarJWT(user.id);
+    const token = await generateJWT(user.id);
 
     res.json(token);
   } catch (error) {

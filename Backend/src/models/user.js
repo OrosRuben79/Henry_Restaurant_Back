@@ -32,8 +32,7 @@ const UserSchema = Schema({
         default: false
     },
     country:{
-        type: String,
-        required: true
+        type: String
     }
 });
 
