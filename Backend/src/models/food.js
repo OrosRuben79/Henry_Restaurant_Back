@@ -1,20 +1,15 @@
-const {Schema, model } = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const FoodSchema = Schema({
     name: {
         type: String,
-        required: [true, 'El nombre es obligatorio'],
+        required: [true, 'El nombre de la comida es obligatorio'],
         unique: true,
         uppercase: true
     },
     state: {
         type: Boolean,
         default: true,
-        required: true
-    },
-    admin: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
         required: true
     },
     price: {

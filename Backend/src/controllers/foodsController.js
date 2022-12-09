@@ -7,7 +7,7 @@ const getFoods = async (req, res) => {
   try {
     const foods = await Food.find();
     console.log(foods)
-    res.status(200).json( foods );
+    res.status(200).json(foods);
   } catch (error) {
     res.status(400).json({ msg: error });
   }
@@ -16,23 +16,23 @@ const getFoods = async (req, res) => {
 
 const postFoods = async (req, res) => {
   try {
-    const { name, price, type, description, img, admin } = req.body;
-    
+    const { name, price, type, description, img } = req.body;
+
     const foods = await Food.create({
       name,
       price,
       type,
       description,
       img,
-      admin,
+
     });
-  
+
     res.status(200).json(foods);
   } catch (error) {
     res.status(400).json({ msg: error });
   }
-  
-  
+
+
 };
 
 
@@ -49,28 +49,20 @@ const putFoods = async (req, res) => {
   }
 };
 
-
-// const deleteFoods = async (req, res) => {
-//   // const { id } = req.params;
-  
-//   // const foods = await Food.findByIdAndUpdate(id, { state: false});
-
-//   res.json( "estoy por llegar" );
-//   try {
-//   } catch (error) {
-//     res.status(400).json("soy el error");
-//   }
-// };
-
 const deleteFoods = async (req, res) => {
+  
+  try {
 
-const { _id } = req.params;
+    const { id } = req.params;
 
-const foods = await Food.findByIdAndUpdate( _id, { state: false});
+    const foods = await Food.findByIdAndUpdate(id, { state: false });
 
-res.json(foods);
+    return res.json(foods);
 
-res.status(400).send("soy el error");
+  } catch (error) {
+    res.status(400).json("soy el error");
+
+  }
 
 };
 
