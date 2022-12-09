@@ -1,9 +1,9 @@
-const {Schema, model } = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const FoodSchema = Schema({
     name: {
         type: String,
-        required: [true, 'El nombre es obligatorio'],
+        required: [true, 'El nombre de la comida es obligatorio'],
         unique: true,
         uppercase: true
     },
