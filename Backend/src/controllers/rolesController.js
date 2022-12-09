@@ -17,7 +17,7 @@ const postRoles = async (req, res) => {
     const { role } = req.body;
   
     const roles = await Role.create( { role } );
-  console.log(roles)
+
     res.status(200).json(roles);
   } catch (error) {
     res.status(430).json({ msg: error });
@@ -29,9 +29,10 @@ const postRoles = async (req, res) => {
 const putRoles = async (req, res) => {
   try {
     const { id } = req.params;
-    const { role } = req.body;
+    const { state, ...resto } = req.body
+   
 
-    const roles = await Role.findByIdAndUpdate(id, {role});
+    const roles = await Role.findByIdAndUpdate(id , resto);
 
     res.status(200).json(roles);
   } catch (error) {
@@ -45,9 +46,8 @@ const deleteRoles = async (req, res) => {
   try {
 
     const { id } = req.params;
-    const { role } = req.body;
 
-    const roles = await Role.deleteOne( {id} );
+    const roles = await Role.findByIdAndUpdate(id, { state: false });
 
     return res.json(roles);
 
