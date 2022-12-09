@@ -16,7 +16,7 @@ const getFoods = async (req, res) => {
 
 const postFoods = async (req, res) => {
   try {
-    const { name, price, type, description, img, admin } = req.body;
+    const { name, price, type, description, img } = req.body;
     
     const foods = await Food.create({
       name,
@@ -24,7 +24,7 @@ const postFoods = async (req, res) => {
       type,
       description,
       img,
-      admin,
+  
     });
   
     res.status(200).json(foods);
@@ -63,14 +63,18 @@ const putFoods = async (req, res) => {
 // };
 
 const deleteFoods = async (req, res) => {
-
-const { _id } = req.params;
-
-const foods = await Food.findByIdAndUpdate( _id, { state: false});
-
-res.json(foods);
-
-res.status(400).send("soy el error");
+try {
+  const { id } = req.params;
+  
+  const foods = await Food.findByIdAndUpdate( id, { state: false});
+  
+  return res.json(foods);
+  
+} catch (error) {
+  res.status(400).json("soy el error");
+  
+}
+  
 
 };
 
