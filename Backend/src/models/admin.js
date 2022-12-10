@@ -14,6 +14,11 @@ const AdminSchema = Schema({
         required: [true, 'El correo es obligatorio'],
         unique: true
     },
+    state: {
+        type: Boolean,
+        default: true,
+        required: true
+    },
 
 });
 
