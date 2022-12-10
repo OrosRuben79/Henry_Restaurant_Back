@@ -6,9 +6,12 @@ const OrderSchema = Schema({
         ref: 'User',
         required: true, 
     },
-    order:{
-       type: [Schema.Types.ObjectId],
-    },
+    order:[
+       {
+        type: Schema.Types.ObjectId,
+        ref: 'Food',
+      } 
+    ],
     typepedido:{
         type: String,
         required: true,
