@@ -5,7 +5,12 @@ const FoodSchema = Schema({
         type: String,
         required: [true, 'El nombre de la comida es obligatorio'],
         unique: true,
-        uppercase: true
+        uppercase: true,
+    },
+    id:{
+        type: Schema.Types.ObjectId,
+        ref: 'Admin',
+        required: true, 
     },
     state: {
         type: Boolean,
@@ -24,23 +29,22 @@ const FoodSchema = Schema({
     },
     type: {
         // type: Schema.Types.ObjectId,
-        type: String,
         // ref: 'types',
+        type: String,
         required: true
     },
     // lenguage:{
-    //     es:{
-    //        nombre:{type: String},
-    //        tipo:{ref: 'types'},
-    //        descripcion: { type: String },
-    //     },
-    //     en:{
-    //         name:{type: String},
-    //         type:{ref: 'types'},
-    //         description: { type: String },
-
-    //     }
-
+    //         es:{
+    //            nombre:{type: String},
+    //            tipo:{ref: 'types'},
+    //            descripcion: { type: String },
+    //         },
+    //         en:{
+    //             name:{type: String},
+    //             type:{ref: 'types'},
+    //             description: { type: String },
+    
+    //         }
     // },
     description: { type: String },
     disponible: { type: Boolean, default: true },

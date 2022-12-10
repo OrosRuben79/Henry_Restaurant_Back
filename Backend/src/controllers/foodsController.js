@@ -16,7 +16,7 @@ const getFoods = async (req, res) => {
 
 const postFoods = async (req, res) => {
   try {
-    const { name, price, type, description, img } = req.body;
+    const { name, price, type, description, img, admin } = req.body;
     
     const foods = await Food.create({
       name,
@@ -24,6 +24,7 @@ const postFoods = async (req, res) => {
       type,
       description,
       img,
+      admin
   
     });
   
