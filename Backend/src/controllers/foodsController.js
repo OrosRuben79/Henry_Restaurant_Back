@@ -5,8 +5,8 @@ const Food = require("../models/food");
 const getFoods = async (req, res) => {
 
   try {
-    const foods = await Food.find();
-    console.log(foods)
+    const foods = await Food.find().populate('adminid', 'name');
+   // console.log(foods)
     res.status(200).json( foods );
   } catch (error) {
     res.status(400).json({ msg: error });
@@ -16,15 +16,13 @@ const getFoods = async (req, res) => {
 
 const postFoods = async (req, res) => {
   try {
-    const { name, price, type, description, img, adminid } = req.body;
+    const { price, img, adminid, lenguage } = req.body;
     
     const foods = await Food.create({
-      name,
+      lenguage,
       price,
-      type,
-      description,
       img,
-      admin
+      adminid,
   
     });
   
