@@ -14,7 +14,7 @@ const FoodSchema = Schema({
     },
     admin: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Admin',
         required: true
     },
     price: {

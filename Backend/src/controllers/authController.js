@@ -80,6 +80,22 @@ const googleSingIn = async (req, res) => {
   }
 };
 
+const renovarJWT = async( req, res = response ) =>{
+
+  const { user } = req;
+
+  // const data = {
+  //   fullName: user.fullName,
+  //   email: user.email,
+
+  // }
+
+  res.json({
+    user
+  })
+
+}
+
 module.exports = {
   login,
   googleSingIn,
