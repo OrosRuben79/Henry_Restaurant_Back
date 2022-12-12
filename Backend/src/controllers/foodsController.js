@@ -5,9 +5,16 @@ const Food = require("../models/food");
 const getFoods = async (req, res) => {
 
   try {
+    const {name} = req.query
+    
+    if(name){
+      const food = await Food.find({'lenguage.en.name': {$regex:"^\\b"+ name.toUpperCase()}}).populate('adminid', 'name');
+     return res.status(200).json( food );
+    }
+
     const foods = await Food.find().populate('adminid', 'name');
    // console.log(foods)
-    res.status(200).json( foods );
+     return res.status(200).json( foods );
   } catch (error) {
     res.status(400).json({ msg: error });
   }
@@ -18,6 +25,9 @@ const postFoods = async (req, res) => {
   try {
     const { price, img, adminid, lenguage } = req.body;
     
+    lenguage.en.name = lenguage.en.name.toUpperCase()
+    lenguage.es.name = lenguage.es.name.toUpperCase()
+    
     const foods = await Food.create({
       lenguage,
       price,
@@ -26,6 +36,7 @@ const postFoods = async (req, res) => {
   
     });
   
+   
     res.status(200).json(foods);
   } catch (error) {
     res.status(400).json({ msg: error });
