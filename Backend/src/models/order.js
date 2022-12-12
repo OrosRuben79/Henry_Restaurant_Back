@@ -11,8 +11,9 @@ const OrderSchema = Schema({
       type: Schema.Types.ObjectId,
       ref: 'Food'
     },
+
   ],
-  typepedido: {
+  typeOrder: {
     type: String,
     required: true,
     enum: ["LOCAL", "DELIVERY"],
@@ -20,12 +21,14 @@ const OrderSchema = Schema({
   table: {
     type: Number,
   },
-  direccion: {
+  address: {
     type: String,
+
   },
   stateOrder: {
     type: String,
     enum: ["TERMINADO", "ENPROCESO", "RECHAZADO"],
+    default: "ENPROCESO",
   },
   state: {
     type: Boolean,

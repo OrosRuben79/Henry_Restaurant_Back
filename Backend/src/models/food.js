@@ -15,19 +15,6 @@ const FoodSchema = Schema({
     type: Number,
     default: 0,
   },
-  // name: {
-  //     type: String,
-  //     required: [true, 'El nombre de la comida es obligatorio'],
-  //     unique: true,
-  //     uppercase: true,
-  // },
-  // type: {
-  //     // type: Schema.Types.ObjectId,
-  //     // ref: 'types',
-  //     type: String,
-  //     required: true
-  // },
-  // description: { type: String },
   lenguage: {
     es: {
       name: {
