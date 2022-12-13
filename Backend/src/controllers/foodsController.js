@@ -5,7 +5,7 @@ const Food = require("../models/food");
 const getFoods = async (req, res) => {
 
   try {
-    const foods = await Food.find().populate('adminid', 'name');
+    const foods = await Food.find().populate('adminid', 'fullName');
    // console.log(foods)
     res.status(200).json( foods );
   } catch (error) {

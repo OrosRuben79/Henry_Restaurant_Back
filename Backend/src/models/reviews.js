@@ -6,9 +6,21 @@ const ReviewsSchema = Schema({
         ref: "User",
        // required: true,
       },
-    role: {
+    reviewsDate: {
+        type: Date,
+        required: true
+    },
+    reviews: {
         type: String,
-        required: [true, 'El rol es obligatorio']
+        required: true,
+        enum:['EXCELENTE', 'MUY BUENO', 'BUENO', 'REGULAR', 'INSUFICIENTE']
+    },
+    score: {
+        type: Number,
+        required: true,
+    },
+    descriptions: {
+        type: String,
     },
     state: {
         type: Boolean,
