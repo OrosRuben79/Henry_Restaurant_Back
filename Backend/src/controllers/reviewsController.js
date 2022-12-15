@@ -4,17 +4,41 @@ const Reviews = require("../models/reviews");
 const getReviews = async (req, res) => {
 
   try {
-    const reviews = await Reviews.find().populate('userid', 'fullName');
+    const review = await Reviews.find()
+    // .populate('orderid', ['userid', 'fullName'])
+    .populate('orderid', ['typeOrder'] )
+    .populate('foods', ['lenguage',"img","price"])
 
-    res.status(200).json( reviews );
+    
+    res.status(200).json( review );
   } catch (error) {
     res.status(400).json({ msg: error });
   }
 };
 
-
+const postReviews = async (req, res) => {
+  const { foods, reviewsDate, orderid, description, reviews, score} = req.body;
+  
+  const review = await Reviews.create({
+   foods,
+   orderid,
+   reviewsDate,
+   description,
+   score,
+   reviews,
+  
+  });
+  try {
+    
+    res.status(200).json(review);
+  } catch (error) {
+    res.status(400).json({ msg: error });
+  }
+   
+};
   
   module.exports = {
     getReviews,
+    postReviews,
   };
   

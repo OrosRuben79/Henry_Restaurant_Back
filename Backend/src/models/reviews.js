@@ -1,11 +1,19 @@
-const {Schema, model } = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const ReviewsSchema = Schema({
-    userid: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-       // required: true,
-      },
+
+    orderid: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: ["Order"],
+        },
+    ],
+    foods: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Food'
+        },
+    ],
     reviewsDate: {
         type: Date,
         required: true
@@ -13,7 +21,7 @@ const ReviewsSchema = Schema({
     reviews: {
         type: String,
         required: true,
-        enum:['EXCELENTE', 'MUY BUENO', 'BUENO', 'REGULAR', 'INSUFICIENTE']
+        enum: ['EXCELENTE', 'MUY BUENO', 'BUENO', 'REGULAR', 'INSUFICIENTE']
     },
     score: {
         type: Number,
