@@ -53,10 +53,28 @@ const putReviews = async (req, res) => {
 
 };
 
+
+const deleteReviews = async (req, res) => {
+  try {
+
+    const { id } = req.params;
+
+    const review = await Reviews.findByIdAndUpdate(id, { state: false });
+
+    return res.json(review);
+
+  } catch (error) {
+    res.status(400).json({ msg: error });
+
+  }
+
+};
+
   
   module.exports = {
     getReviews,
     postReviews,
     putReviews,
+    deleteReviews,
   };
   
