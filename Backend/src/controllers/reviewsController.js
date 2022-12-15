@@ -36,9 +36,27 @@ const postReviews = async (req, res) => {
   }
    
 };
+
+
+
+const putReviews = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { state, ...resto } = req.body;
+
+    const review = await Reviews.findByIdAndUpdate(id, resto);
+
+    res.status(200).json(review);
+  } catch (error) {
+    res.status(400).json({ msg: error });
+  }
+
+};
+
   
   module.exports = {
     getReviews,
     postReviews,
+    putReviews,
   };
   
