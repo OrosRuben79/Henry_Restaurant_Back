@@ -9,30 +9,18 @@ const login = async (req, res) => {
   try {
     //check if email exist
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({
-        msg: "Usuario / Password not rigth 1",
-      });
-    }
+		if(user){
+			const validPassword = bcryptjs.compareSync(password, user.password);
+			if (!validPassword) {
+				return res.status(400).json({
+					msg: "Usuario / Password not rigth 3"
+				});
+			}
+			// Generar el JWT
+			const token = await generateJWT(user.id);
+			res.status(200).json(token);
+		}
 
-    // check is user are active
-    if (!user.state) {
-      return res.status(400).json({
-        msg: "Usuario / Password not rigth 2",
-      });
-    }
-    //check password
-    const validPassword = bcryptjs.compareSync(password, user.password);
-    if (!validPassword) {
-      return res.status(400).json({
-        msg: "Usuario / Password not rigth 3",
-      });
-    }
-
-    // Generar el JWT
-    const token = await generateJWT(user.id);
-
-    res.status(200).json({ token });
   } catch (error) {
     console.log(error);
     res.status(500).json({
