@@ -5,11 +5,15 @@ const {
   postUser,
   putUser,
   delteUser,
+	activateAccount,
+	updateUser,
 } = require("../controllers/usersContoller");
 const { existsEmail, existsUserById } = require("../helpers/db-validators");
 const { validatorMiddlewere } = require("../middlewares/validator-middleweres");
 
 const router = Router();
+
+router.get("/activateAccount", activateAccount);
 
 router.get("/", getUser);
 
@@ -37,6 +41,8 @@ router.put(
   ],
   putUser
 );
+
+router.patch("/updateUser/:id", updateUser)
 
 router.delete(
   "/:id",
