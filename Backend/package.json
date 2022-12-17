@@ -4,13 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-<<<<<<< HEAD
-    "start": "nodemon -L",
-    "build": "node index.js",
-=======
     "start": "node index.js",
 		"dev": "nodemon -L",
->>>>>>> origin/RubenJr
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
