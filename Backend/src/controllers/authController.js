@@ -9,6 +9,7 @@ const login = async (req, res) => {
   try {
     //check if email exist
     const user = await User.findOne({ email });
+		if(!user) return res.status(404).json("User not found")
 		if(user){
 			const validPassword = bcryptjs.compareSync(password, user.password);
 			if (!validPassword) {
@@ -18,7 +19,7 @@ const login = async (req, res) => {
 			}
 			// Generar el JWT
 			const token = await generateJWT(user.id);
-			res.status(200).json(token);
+			return res.status(200).json(token);
 		}
 
   } catch (error) {
