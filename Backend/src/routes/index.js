@@ -6,7 +6,8 @@ const reviewsRouter = require('./reviewsRouter');
 const adminsRouter = require('./adminsRouter');
 const rolesRouter = require('./rolesRouter');
 const ordersRouter = require('./ordersRouter');
-
+const authRouter = require('./authRouter');
+const paymentRouter = require('./paymentRouter')
 
 const router = Router();
 
@@ -16,6 +17,8 @@ router.use('/reviews', reviewsRouter)
 router.use('/admins', adminsRouter)
 router.use('/roles', rolesRouter)
 router.use('/orders', ordersRouter)
+router.use('/auth', authRouter)
+router.use('/payment', paymentRouter)
 
 
 module.exports = router;
