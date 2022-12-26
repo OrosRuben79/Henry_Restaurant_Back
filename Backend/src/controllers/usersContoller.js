@@ -20,7 +20,7 @@ const postUser = async (req, res) => {
 		const { fullName, email, password, img, country } = req.body;
 
 		const findUser = await User.findOne({ email })
-		if (findUser) return res.status(400).json("Usuario ya existe")
+		if (findUser) return res.status(400).json("Usuario ya existe " + findUser._id)
 
 		const salt = bcryptjs.genSaltSync();
 		const cripPasworrd = bcryptjs.hashSync(password, salt);
@@ -116,7 +116,7 @@ const activateAccount = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-	const { password } = req.body
+	const { fullName, password, country, city, address } = req.body
 	const id = req.params
 	try {
 		const findUser = await User.findById({ _id: id.id })
@@ -125,19 +125,20 @@ const updateUser = async (req, res) => {
 		if (findUser.google) {
 			const user = await User.findOneAndUpdate(
 				{ _id: id.id },
-				{ ...req.body },
+				{ fullName, country, city, address },
 				{ returnOriginal: false }
 			)
-			return res.status(204).json(user)
+			return res.json(user)
 		} else {
 			const validatePassword = await bcryptjs.compareSync(password, findUser.password)
 			if (!validatePassword) return res.status(404).json("password invalid")
 			const user = await User.findOneAndUpdate(
 				{ _id: id.id },
-				{ ...req.body },
+				{ fullName, country, city, address },
 				{ returnOriginal: false }
 			)
-			return res.status(204).json(user)
+			
+			return res.json(user)
 		}
 
 	} catch (error) {
