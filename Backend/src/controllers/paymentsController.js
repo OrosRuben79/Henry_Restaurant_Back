@@ -13,6 +13,7 @@ const paymentWithStripe = async (req, res) => {
 
 	try {
 		await stripe.paymentIntents.create({
+
 			amount: calculateOrderAmount(items),
 			currency: "usd",
 			payment_method: id,
@@ -33,5 +34,5 @@ const paymentWithStripe = async (req, res) => {
 
 module.exports = {
 	paymentWithStripe,
-	calculateOrderAmount
+	calculateOrderAmount,
 }
