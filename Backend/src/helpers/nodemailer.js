@@ -20,7 +20,7 @@ const mailActivateAccount = async (name, email, urlserver, token) => {
 		to: email,
 		subject: "Activa tu cuenta en Henry foods!!!",
 		html: `
-		  <h2>Hola usuario ${name}</h2>
+		  <h2>Hola ${name}</h2>
 		  <h4>Gracias por registrarte en nuestra pagina</h4>
 		  <hr />
 		  <div>
@@ -35,7 +35,28 @@ const mailActivateAccount = async (name, email, urlserver, token) => {
 	});
 };
 
+const mailConfirmShopping = async (name, email, address, valuePaid) => {
+	await transporter.sendMail({
+		from: "PF-Henry <devapps2211@gmail.com>",
+		to: email,
+		subject: "Confirmacion compra exitosa Henry foods!!! ✅",
+		html: `
+		  <h2>Hola ${name}</h2>
+		  <h3>Tu compra se ha realizado correctamente </h3>
+		  <hr />
+		  <div>
+			<h4>Gracias por comprar en nuestra pagina 🤗 ❤️ 🙂 </h4>
+			<p>Muy pronto en tu direccion registrada ${address} estara llegando tu pedido hecho por un valor de $ ${valuePaid}</p>
+		  <hr />			
+			<p>Atentamente</p>
+			<p>Tus amigos de Henry foods</p>
+		  </div> 
+		`,
+	});
+};
+
 module.exports = {
 	transporter,
 	mailActivateAccount,
+	mailConfirmShopping,
 }
