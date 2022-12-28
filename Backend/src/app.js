@@ -3,8 +3,29 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const router = require('./routes/index');
+// const path = require('path');
 
 const server = express();
+
+//swagger
+// const swaggerUI = require("swagger-ui-express");
+// const swaggerJsDoc = require("swagger-jsdoc");
+// const swaggerSpec = {
+//   definition: {
+//     openapi: "3.0.0",
+//     info:{
+//       title: "Node MorgenDB API",
+//       version: "1.0.0",
+//     },
+//     server:[
+//       {
+//         url: "http://localhost:3001"
+//       },
+//     ],
+//   },
+//   apis: [`${path.join(__dirname, "../../src/")}`]
+
+// }
 
 server.name = 'API';
 
@@ -24,6 +45,7 @@ server.use((req, res, next) => {
 
 
 server.use('/', router)
+// server.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerJsDoc(swaggerSpec)))
 
 
 // Error catching endware.
