@@ -17,13 +17,13 @@ const getReviews = async (req, res) => {
 };
 
 const postReviews = async (req, res) => {
-  const { foods, reviewsDate, orderid, description, reviews, score} = req.body;
+  const { foods, reviewsDate, orderid, descriptions, reviews, score} = req.body;
   
   const review = await Reviews.create({
    foods,
    orderid,
    reviewsDate,
-   description,
+   descriptions,
    score,
    reviews,
   
