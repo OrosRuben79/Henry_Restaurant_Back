@@ -12,8 +12,10 @@ const getFoods = async (req, res) => {
      return res.status(200).json( food );
     }
 
-    const foods = await Food.find().populate('adminid', 'name');
-   // console.log(foods)
+    const foods = await Food.find()
+    .populate('adminid', 'name')
+    .populate('reviewid', ['reviews', 'score', 'descriptions'])
+    console.log(foods)
      return res.status(200).json( foods );
   } catch (error) {
     res.status(400).json({ msg: error });
@@ -23,12 +25,13 @@ const getFoods = async (req, res) => {
 
 const postFoods = async (req, res) => {
   try {
-    const { price, img, adminid, lenguage } = req.body;
+    const { price, img, adminid, lenguage, reviewid } = req.body;
     
     lenguage.en.name = lenguage.en.name.toUpperCase()
     lenguage.es.name = lenguage.es.name.toUpperCase()
     
     const foods = await Food.create({
+      reviewid,
       lenguage,
       price,
       img,

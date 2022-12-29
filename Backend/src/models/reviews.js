@@ -29,6 +29,7 @@ const ReviewsSchema = Schema({
     },
     descriptions: {
         type: String,
+        
     },
     state: {
         type: Boolean,
