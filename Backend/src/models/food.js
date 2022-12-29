@@ -11,23 +11,30 @@ const FoodSchema = Schema({
     default: true,
     required: true,
   },
+  reviewid: [
+    {
+        type: Schema.Types.ObjectId,
+        ref: "Reviews",
+        required: true,
+    },
+],
   price: {
     type: Number,
     default: 0,
   },
   lenguage: {
     es: {
-      name: {
-        type: String,
-        required: [true, "El nombre de la comida es obligatorio"],
-        unique: true,
-        uppercase: true,
-      },
-      type: {
-            type: String,
-            required: true
+        name: {
+          type: String,
+          required: [true, "El nombre de la comida es obligatorio"],
+          unique: true,
+          uppercase: true,
         },
-      descripcion: { type: String },
+        type: {
+              type: String,
+              required: true
+          },
+        descripcion: { type: String },
     },
     en: {
         name: {

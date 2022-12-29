@@ -1,4 +1,7 @@
+const { mailConfirmShopping } = require("../helpers/nodemailer");
 const Order = require("../models/order");
+const User = require("../models/user");
+const { calculateOrderAmount } = require('./paymentsController')
 
 const getOrders = async (req, res) => {
 
@@ -28,21 +31,31 @@ const getOrdersUserid = async (req, res) => {
 
 const postOrders = async (req, res) => {
   try {
-
-
     const { userid, order, typeOrder, table, address } = req.body;
+
+		const user = await User.findById(userid)
+
+		// pendiente guardar la cantidad de unidades que pide el cliente
+		const newOrder = order.map(el => {
+			return { _id: el.id, img: el.img, price: el.price, cant: el.cant }
+		})
+
+		const valuePaid = calculateOrderAmount(order) / 100
 
     const orders = await Order.create({
       userid,
-      order,
+      order: newOrder,
       typeOrder,
       table,
       address,
-
+			valuePaid
     });
 
+		mailConfirmShopping(user.fullName, user.email, address, valuePaid)
+		
     res.status(200).json(orders);
   } catch (error) {
+		console.log("Error controller post order", error);
     res.status(400).json({ msg: error });
   }
 

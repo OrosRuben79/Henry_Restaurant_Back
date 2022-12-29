@@ -10,17 +10,16 @@ const calculateOrderAmount = (items) =>{
 
 const paymentWithStripe = async (req, res) => {
 	const { id, items } = req.body;
-	console.log("items", items);
 
 	try {
-		const paymentIntent = await stripe.paymentIntents.create({
+		await stripe.paymentIntents.create({
+
 			amount: calculateOrderAmount(items),
 			currency: "usd",
 			payment_method: id,
 			confirm: true,
 		});
 
-		console.log("Intento de pago...", paymentIntent);
 		return res.json({message: "Succesfull payment"})
 	} catch (error) {
 		if(error?.raw?.message){
@@ -35,4 +34,5 @@ const paymentWithStripe = async (req, res) => {
 
 module.exports = {
 	paymentWithStripe,
+	calculateOrderAmount,
 }
