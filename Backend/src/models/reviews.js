@@ -1,41 +1,36 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
 const ReviewsSchema = Schema({
+  title:{
+    type: String,
+    required: true
 
-    orderid: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: ["Order"],
-        },
-    ],
-    foods: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Food'
-        },
-    ],
-    reviewsDate: {
-        type: Date,
-        required: true
-    },
-    reviews: {
-        type: String,
-        required: true,
-        enum: ['EXCELENTE', 'MUY BUENO', 'BUENO', 'REGULAR', 'INSUFICIENTE']
-    },
-    score: {
-        type: Number,
-        required: true,
-    },
-    descriptions: {
-        type: String,
-        
-    },
-    state: {
-        type: Boolean,
-        default: true,
-        required: true
-    },
+  },
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
+  foodId: {
+    type: Schema.Types.ObjectId,
+    ref: "Food",
+  },
+  reviewsDate: {
+    type: Date,
+    required: true,
+  },
+  score: {
+    type: Number,
+    required: true,
+  },
+  descriptions: {
+    type: String,
+  },
+  positve: { type: Boolean },
+  state: {
+    type: Boolean,
+    default: true,
+    required: true,
+  },
 });
 
-module.exports = model('Reviews', ReviewsSchema);
+module.exports = model("Reviews", ReviewsSchema);
