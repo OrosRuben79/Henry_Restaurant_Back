@@ -14,7 +14,8 @@ const getFoods = async (req, res) => {
 
     const foods = await Food.find()
     .populate('adminid', 'name')
-    .populate('reviewid', ['reviews', 'score', 'descriptions'])
+   // .populate('reviewid', ['reviews', 'score', 'descriptions'])
+   // console.log(foods)
      return res.status(200).json( foods );
   } catch (error) {
     res.status(400).json({ msg: error });
