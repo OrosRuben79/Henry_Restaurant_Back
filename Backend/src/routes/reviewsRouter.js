@@ -10,6 +10,7 @@ const router = Router();
 router.get('/', getReviews)
 
 router.post('/',[
+   check("title", "title requerido").not().isEmpty(),
    check("userId", "No es un ID valido").isMongoId(),
    check("userId").custom(userIDValidator),
    check("foodId", "No es un ID valido").isMongoId(),
