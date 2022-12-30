@@ -11,47 +11,37 @@ const FoodSchema = Schema({
     default: true,
     required: true,
   },
-  reviewid: [
-    {
-        type: Schema.Types.ObjectId,
-        ref: "Reviews",
-        required: true,
-    },
-],
   price: {
     type: Number,
     default: 0,
   },
+  tags: {
+    en: [],
+    es: [],
+  },
   lenguage: {
     es: {
-        name: {
-          type: String,
-          required: [true, "El nombre de la comida es obligatorio"],
-          unique: true,
-          uppercase: true,
-        },
-        type: {
-              type: String,
-              required: true
-          },
-        descripcion: { type: String },
+      name: {
+        type: String,
+        required: [true, "El nombre de la comida es obligatorio"],
+        unique: true,
+        uppercase: true,
+      },
+      descripcion: { type: String },
     },
     en: {
-        name: {
-            type: String,
-            required: [true, "El nombre de la comida es obligatorio"],
-            unique: true,
-            uppercase: true,
-          },
-          type: {
-                type: String,
-                required: true
-            },
-          descripcion: { type: String },
+      name: {
+        type: String,
+        required: [true, "El nombre de la comida es obligatorio"],
+        unique: true,
+        uppercase: true,
+      },
+      descripcion: { type: String },
     },
   },
   disponible: { type: Boolean, default: true },
   img: { type: String },
-});
+},
+);
 
 module.exports = model("Food", FoodSchema);
