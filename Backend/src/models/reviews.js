@@ -1,6 +1,11 @@
 const { Schema, model } = require("mongoose");
 
 const ReviewsSchema = Schema({
+  title:{
+    type: String,
+    required: true
+
+  },
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",
