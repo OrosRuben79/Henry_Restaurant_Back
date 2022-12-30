@@ -41,7 +41,9 @@ const FoodSchema = Schema({
   },
   disponible: { type: Boolean, default: true },
   img: { type: String },
+
 },
 );
+
 
 module.exports = model("Food", FoodSchema);

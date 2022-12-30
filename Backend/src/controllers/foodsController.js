@@ -36,7 +36,6 @@ const postFoods = async (req, res) => {
       price,
       img,
       adminid,
-  
     });
   
    
