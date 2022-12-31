@@ -22,7 +22,7 @@ const getReviews = async (req, res) => {
 };
 
 const postReviews = async (req, res) => {
-  const {title, userId, foodId, reviewsDate, score, descriptions } = req.body;
+  const {title, userId, foodId, score, descriptions } = req.body;
   let positve  = false
   if(score>3) positve = true
   
@@ -30,7 +30,6 @@ const postReviews = async (req, res) => {
     title,
     userId,
     foodId,
-    reviewsDate,
     score,
     descriptions,
     positve
@@ -38,6 +37,7 @@ const postReviews = async (req, res) => {
   try {
     res.status(200).json(review);
   } catch (error) {
+    console.log(error)
     res.status(400).json({ msg: error });
   }
 };
