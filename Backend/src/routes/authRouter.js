@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
-const { login, googleSingIn, userData } = require("../controllers/authController");
+const { login, googleSingIn, userData, loginGithub } = require("../controllers/authController");
 const { getUserById } = require("../controllers/usersContoller");
 const { validateJWT } = require("../middlewares/validator-jwt");
 const { validatorMiddlewere } = require("../middlewares/validator-middleweres");
@@ -25,6 +25,8 @@ router.post(
   ],
   googleSingIn
 );
+
+router.post("/gitHub", loginGithub)
 
 router.get('/getUserById/:id', getUserById)
 
