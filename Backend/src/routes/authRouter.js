@@ -26,7 +26,7 @@ router.post(
   googleSingIn
 );
 
-router.post("/gitHub", loginGithub)
+router.post("/gitHub", loginGithub) 
 
 router.get('/getUserById/:id', getUserById)
 

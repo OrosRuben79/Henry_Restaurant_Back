@@ -33,7 +33,7 @@ const UserSchema = Schema({
     },
 		thirdAuth: {
 			type: String,
-			default: ""
+			default: "" 
 		},
     country:{
         type: String

@@ -110,7 +110,7 @@ const loginGithub = async (req, res) => {
 			const createUser = await User.create(dataUser);
 			const token = await generateJWT(createUser._id);
 
-			return res.status(201).json(token);
+			return res.status(201).json(token); 
 		}
 	} catch (error) {
 		console.log("Error on login user using github", error);
