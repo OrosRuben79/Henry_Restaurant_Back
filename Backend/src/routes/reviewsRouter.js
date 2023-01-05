@@ -18,8 +18,6 @@ router.post('/',[
    check("score", "score requerido").not().isEmpty(),
    check("score").custom(scoreValidator),
    validatorMiddlewere
-
-
 ], postReviews)
 
 
