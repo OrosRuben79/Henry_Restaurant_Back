@@ -35,6 +35,10 @@ const OrderSchema = Schema({
     default: true,
     required: true,
   },
+	valuePaid: {
+		type: Number,
+		required: true
+	}
 });
 
 module.exports = model("Order", OrderSchema);
