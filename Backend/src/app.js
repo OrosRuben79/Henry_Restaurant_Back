@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const router = require('./routes/index');
 // const path = require('path');
 const cors = require('cors');
+const fileUpload = require('express-fileupload');
 
 const server = express();
 
@@ -30,8 +31,8 @@ const server = express();
 
 server.name = 'API';
 
-
-
+// Middlweres
+server.use(fileUpload({ useTempFiles : true,tempFileDir : '/tmp/'}));
 server.use(bodyParser.urlencoded({ extended: true, limit: '50mb'}));
 server.use(bodyParser.json({ limit: '50mb'}));
 server.use(cookieParser());

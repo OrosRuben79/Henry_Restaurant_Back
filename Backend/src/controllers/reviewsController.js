@@ -22,15 +22,14 @@ const getReviews = async (req, res) => {
 };
 
 const postReviews = async (req, res) => {
-  const {title, userId, foodId, reviewsDate, score, descriptions } = req.body;
+  const {title, userId, foodId, score, descriptions } = req.body;
   let positve  = false
-  if(score>3) positve = true
+  if(score>2) positve = true
   
   const review = await Reviews.create({
     title,
     userId,
     foodId,
-    reviewsDate,
     score,
     descriptions,
     positve
