@@ -1,4 +1,10 @@
+const bcryptjs = require("bcryptjs");
+const { mailActivateAccount } = require("../helpers/nodemailer");
+const { generateJWT } = require("../helpers/generate-jwt");
 const Admin = require("../models/admin");
+
+const URL_SERVER = process.env.URL_SERVER || "http://localhost:3001/admins/";
+const URL_CLIENT = process.env.URL_CLIENT || "http://localhost:3000/";
 
 
 const getAdmins = async (req, res) => {
@@ -14,11 +20,28 @@ const getAdmins = async (req, res) => {
 
 const postAdmins = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, img, rol, country  } = req.body;
 
-    const admin = await Admin.create({ name, email, password });
+    const findAdmin= await Admin.findOne({ email })
+		if (findAdmin) return res.status(400).json("Usuario ya existe " + findAdmin._id)
 
-    res.status(200).json(admin);
+		const salt = bcryptjs.genSaltSync();
+		const cripPasworrd = bcryptjs.hashSync(password, salt);
+
+    const admin = await Admin.create({
+      name, 
+      email, 
+      password: cripPasworrd,
+      img,
+      rol,
+      country,
+     });
+
+     const token = await generateJWT(admin._id, admin.state)
+
+		mailActivateAccount(name, email, URL_SERVER, token)
+
+    res.status(200).json(token);
   } catch (error) {
     res.status(430).json({ msg: error });
   }
