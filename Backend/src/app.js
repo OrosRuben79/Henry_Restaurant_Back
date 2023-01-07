@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const router = require('./routes/index');
 // const path = require('path');
 const cors = require('cors');
+const fileUpload = require('express-fileupload');
 
 const server = express();
 
@@ -30,12 +31,17 @@ const server = express();
 
 server.name = 'API';
 
-server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
-server.use(bodyParser.json({ limit: '50mb' }));
+
+// Middlweres
+server.use(fileUpload({ useTempFiles : true,tempFileDir : '/tmp/'}));
+server.use(bodyParser.urlencoded({ extended: true, limit: '50mb'}));
+server.use(bodyParser.json({ limit: '50mb'}));
+
 server.use(cookieParser());
 server.use(morgan('dev'));
 server.use(cors());
 server.use((req, res, next) => {
+
 
 	const allowedOrigins = ['http://localhost:3000', 'https://henry-client-ecvn.vercel.app']; // update to match the domain you will make the request from
 	const origin = req.headers.origin;

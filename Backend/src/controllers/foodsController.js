@@ -1,3 +1,6 @@
+const cloudinary = require("cloudinary").v2;
+cloudinary.config(process.env.CLOUDINARY_URL);
+
 const Food = require("../models/food");
 
 const getFoods = async (req, res) => {
@@ -75,17 +78,20 @@ const getFoods = async (req, res) => {
 
 const postFoods = async (req, res) => {
   try {
-    const { price, img, adminid, lenguage, reviewid } = req.body;
+    const { tempFilePath } = req.files.file;
+    const { img } = await cloudinary.uploader.upload(tempFilePath);
+
+    const { adminid, price, tags, lenguage } = req.body;
 
     lenguage.en.name = lenguage.en.name.toUpperCase();
     lenguage.es.name = lenguage.es.name.toUpperCase();
 
     const foods = await Food.create({
-      reviewid,
-      lenguage,
-      price,
-      img,
       adminid,
+      price,
+      tags,
+      lenguage,
+      img,
     });
 
     res.status(200).json(foods);
