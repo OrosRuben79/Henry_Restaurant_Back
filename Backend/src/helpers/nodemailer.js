@@ -10,9 +10,9 @@ const transporter = nodemailer.createTransport({
 	},
 });
 
-transporter.verify().then(() => {
-	console.log("Lista la configuracion para enviar correos");
-});
+// transporter.verify().then(() => {
+// 	console.log("Lista la configuracion para enviar correos");
+// });
 
 const mailActivateAccount = async (name, email, urlserver, token) => {
 	await transporter.sendMail({
