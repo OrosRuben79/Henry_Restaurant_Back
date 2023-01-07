@@ -13,7 +13,6 @@
 // transporter.verify().then(() => {
 // 	console.log("Lista la configuracion para enviar correos");
 // });
-
 // const mailActivateAccount = async (name, email, urlserver, token) => {
 // 	await transporter.sendMail({
 // 		from: "PF-Henry <devapps2211@gmail.com>",
@@ -34,7 +33,6 @@
 // 		`,
 // 	});
 // };
-
 // const mailConfirmShopping = async (name, email, address, valuePaid) => {
 // 	await transporter.sendMail({
 // 		from: "PF-Henry <devapps2211@gmail.com>",
@@ -54,7 +52,6 @@
 // 		`,
 // 	});
 // };
-
 // module.exports = {
 // 	transporter,
 // 	mailActivateAccount,
