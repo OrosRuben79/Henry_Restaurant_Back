@@ -16,7 +16,7 @@ const OrderSchema = Schema({
   typeOrder: {
     type: String,
     required: true,
-    enum: ["LOCAL", "DELIVERY"],
+    enum: ["LOCAL", "DELIVERY", "RESERVATION"],
   },
   table: {
     type: Number,
@@ -37,7 +37,9 @@ const OrderSchema = Schema({
   },
 	valuePaid: {
 		type: Number,
-		required: true
+	},
+	date: {
+		type: String,
 	}
 });
 
