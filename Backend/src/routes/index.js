@@ -9,6 +9,7 @@ const ordersRouter = require('./ordersRouter');
 const authRouter = require('./authRouter');
 const tagsRouter = require('./tagsRouter');
 const paymentRouter = require('./paymentRouter')
+const uploadRouter = require('./uploadRouter')
 
 const router = Router();
 
@@ -21,6 +22,7 @@ router.use('/orders', ordersRouter)
 router.use('/auth', authRouter)
 router.use('/tags', tagsRouter)
 router.use('/payment', paymentRouter)
+router.use('/upload', uploadRouter)
 
 
 module.exports = router;

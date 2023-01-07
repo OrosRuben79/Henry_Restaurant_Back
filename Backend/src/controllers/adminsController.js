@@ -15,8 +15,24 @@ const getAdmins = async (req, res) => {
   } catch (error) {
     res.status(400).json({ msg: error });
   }
+}
+
+const getAdminById = async (req, res) => {
+  const {id} = req.params
+  try {
+    const findAdmin = await Admin.findById(id);
+    return findAdmin
+    ? res.json(findAdmin)
+    : res.status(404).json("Admin not found")
+  } catch (error) {
+    console.log('Error trying find admins by id', error);
+    
+    res.status(400).json({ msg: error });
+  }
 
 };
+
+
 
 const postAdmins = async (req, res) => {
   try {
@@ -27,6 +43,7 @@ const postAdmins = async (req, res) => {
 
 		const salt = bcryptjs.genSaltSync();
 		const cripPasworrd = bcryptjs.hashSync(password, salt);
+    
 
     const admin = await Admin.create({
       name, 
@@ -35,6 +52,7 @@ const postAdmins = async (req, res) => {
       img,
       rol,
       country,
+      state : false
      });
 
      const token = await generateJWT(admin._id, admin.state)
@@ -95,4 +113,5 @@ module.exports = {
   postAdmins,
   putAdmins,
   deleteAdmins,
+  getAdminById
 };

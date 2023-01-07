@@ -27,8 +27,7 @@ const AdminSchema = Schema({
     },
     state: {
         type: Boolean,
-        default: true,
-        required: true
+        default: true
     },
 
 });
