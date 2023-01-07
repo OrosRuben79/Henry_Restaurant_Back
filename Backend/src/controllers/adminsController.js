@@ -23,7 +23,7 @@ const postAdmins = async (req, res) => {
     const { name, email, password, img, rol, country  } = req.body;
 
     const findAdmin= await Admin.findOne({ email })
-		if (findAdmin) return res.status(400).json("Usuario ya existe " + findAdmin._id)
+		if (findAdmin) return res.status(400).json("UsuarioAdmin ya existe " + findAdmin._id)
 
 		const salt = bcryptjs.genSaltSync();
 		const cripPasworrd = bcryptjs.hashSync(password, salt);
@@ -52,7 +52,11 @@ const postAdmins = async (req, res) => {
 const putAdmins = async (req, res) => {
   try {
     const { id } = req.params;
-    const { state, ...resto } = req.body
+    const { state, google, ...resto } = req.body
+
+    const salt = bcryptjs.genSaltSync();
+		if (resto.password)
+			resto.password = bcryptjs.hashSync(resto.password, salt);
    
     const admin = await Admin.findByIdAndUpdate(id , resto);
 
@@ -78,6 +82,11 @@ const deleteAdmins = async (req, res) => {
   }
 
 };
+
+const getAdminId = (req, res) => {
+
+  
+}
 
 
 
