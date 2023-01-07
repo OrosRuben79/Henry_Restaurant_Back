@@ -2,23 +2,7 @@ const Tag = require("../models/tag");
 
 const getTags = async (req, res) => {
   try {
-    const { tagES, tagEN, type} = req.query
-
-    // if(tagES){
-    //   const tages = await Tag.find({"tagES": tagES} )
-    //  return res.status(200).json(tages);
-    // }
-
-    // if(tagEN){
-    //   const tagen = await Tag.find({"tagEN": tagEN} )
-    //  return res.status(200).json(tagen);
-    // }
-
-    if(type){
-      const types = await Tag.find({"type": type} )
-     return res.status(200).json(types);
-    }
-
+ 
    const tags = await Tag.find()
 
     return res.status(200).json(tags);
