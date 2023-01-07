@@ -3,12 +3,13 @@ const { check } = require("express-validator");
 const {
   getUser,
   postUser,
-  putUser,
+  updateImgUser,
   delteUser,
 	activateAccount,
 	updateUser,
 	recoveryPassword,
 	setNewPassword,
+  deleteImgUser,
 } = require("../controllers/usersContoller");
 const { existsEmail, existsUserById } = require("../helpers/db-validators");
 const { validatorMiddlewere } = require("../middlewares/validator-middleweres");
@@ -45,8 +46,18 @@ router.put(
     check("id").custom(existsUserById),
     validatorMiddlewere,
   ],
-  putUser
+  updateImgUser
 );
+router.put(
+  "/:id/:delete",
+  [
+    check("id", "Is not ID valid").isMongoId(),
+    check("id").custom(existsUserById),
+    validatorMiddlewere,
+  ],
+  deleteImgUser
+);
+
 
 router.patch("/updateUser/:id", updateUser)
 

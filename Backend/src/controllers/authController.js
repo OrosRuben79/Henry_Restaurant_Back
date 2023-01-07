@@ -2,16 +2,33 @@ const bcryptjs = require("bcryptjs");
 const { generateJWT } = require("../helpers/generate-jwt");
 const { jwtDecode } = require("../helpers/jwtDecode");
 const User = require("../models/user");
+const Admin = require("../models/admin");
+const URL_CLIENT = process.env.URL_CLIENT || "http://localhost:3000/";
 
 const login = async (req, res) => {
 	const { email, password } = req.body;
-	console.log("body...", req.body);
+	
 	try {
 		//check if email exist
+		const admin = await Admin.findOne({ email });
+		
 		const user = await User.findOne({ email });
-		console.log("user", user);
-		if (!user) return res.status(404).json("User not found")
+
+		if (admin) {
+			
+			const validPasswordA = bcryptjs.compareSync(password, admin.password);
+			if (!validPasswordA) {
+				return res.status(400).json({
+					msg: "Usuario / Password not rigth 4"
+				});
+			}
+			// Generar el JWT
+			const token = await generateJWT(admin.id);
+			return res.status(201).json(token);
+		}
+
 		if(user.google) return res.status(404).json("Tu correo esta asociado a un inicio de sesion con un tercero como Google o Github")
+
 		if (user) {
 			const validPassword = bcryptjs.compareSync(password, user.password);
 			if (!validPassword) {
@@ -21,6 +38,9 @@ const login = async (req, res) => {
 			const token = await generateJWT(user.id);
 			return res.status(200).json(token);
 		}
+		if (!admin && !user) return res.status(404).json("User not found")
+
+		
 
 	} catch (error) {
 		console.log(error);
