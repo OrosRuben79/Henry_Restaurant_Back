@@ -1,9 +1,9 @@
 const bcryptjs = require("bcryptjs");
-const { mailActivateAccount } = require("../helpers/nodemailer");
-const { generateJWT } = require("../helpers/generate-jwt");
+const { mailActivateAccount, mailToRecoveryPassword } = require("../helpers/nodemailer");
+const { generateJWT, verifyToken } = require("../helpers/generate-jwt");
 const User = require("../models/user");
 
-const URL_SERVER = process.env.URL_SERVER || "http://localhost:3001/users/";
+const URL_SERVER = process.env.URL_SERVER || "http://localhost:3001/";
 const URL_CLIENT = process.env.URL_CLIENT || "http://localhost:3000/";
 
 const getUser = async (req, res) => {
@@ -36,7 +36,7 @@ const postUser = async (req, res) => {
 
 		const token = await generateJWT(user._id, user.state)
 
-		mailActivateAccount(fullName, email, URL_SERVER, token)
+		mailActivateAccount(fullName, email, `${URL_SERVER}/users/`, token)
 
 		return res.status(200).json(token);
 	} catch (error) {
@@ -137,12 +137,77 @@ const updateUser = async (req, res) => {
 				{ fullName, country, city, address },
 				{ returnOriginal: false }
 			)
-			
+
 			return res.json(user)
 		}
 
 	} catch (error) {
 		console.log("Error on trying update user", error);
+		return res.status(500).json(error)
+	}
+}
+
+const recoveryPassword = async (req, res) => {
+	const { email } = req.body;
+	if (!email) return res.status(400).json("Correo no identificado");
+	try {
+		const findUser = await User.findOne({ email });
+		console.log(findUser);
+		if (!findUser) {
+			return res.status(404).json({ message: `El correo ${email} no esta registrado ` });
+		} else if (findUser.google) {
+			return res.status(404).json({ message: "Tu solicitud no puede ser procesada debido a que estas autenticado con un tercero como Github o Google. Intenta iniciar sesion con alguno de estos servicios"})
+		} else {
+			// Generar el JWT
+			const token = await generateJWT(findUser._id);
+
+			mailToRecoveryPassword(email, findUser.fullName, URL_CLIENT);
+
+			return res.status(200).json({
+				message: `Por favor revisa tu cuenta de correo ${email} para continuar el proceso de recuperacion de contraseña`,
+				token,
+			});
+		}
+	} catch (error) {
+		console.log("Error controlador usuario recuperacion contraseña", error);
+		return res.status(500).json(error);
+	}
+};
+
+const setNewPassword = async (req, res) => {
+	console.log("seteando new passwd", req.body);
+	const { password, token } = req.body
+	try {
+		const checkToken = await verifyToken(token);
+		console.log("checktoken", checkToken);
+		if (!checkToken) return res.status(400).json("Token invalido!!")
+
+		const findUser = await User.findOne({ _id: checkToken.id })
+		console.log("usuario encontrado", findUser);
+		if (!findUser) {
+			return res.status(404).json("Usuario no encontrado")
+		}
+
+		if (findUser.thirdAuth) {
+			return res.status(400).json("No se puede reestablecer tu contraseña porque estas registrado con un tercero como Github o Google, por favor inicia sesion con el proveedor que corresponda")
+		}
+
+		const salt = await bcryptjs.genSaltSync(10);
+		const hashPasswd = await bcryptjs.hashSync(password, salt)
+
+		const user = await User.findOneAndUpdate(
+			{ _id: checkToken.id },
+			{ password: hashPasswd }
+		)
+
+		console.log("user updated", user);
+		if (!user) {
+			return res.status(400).json("No se pudo actualizar tu contraseña, por favor intenta de nuevo")
+		} else {
+			return res.status(200).json("Se ha cambiado la contraseña exitosamente")
+		}
+	} catch (error) {
+		console.log("Error controller set new password", error);
 		return res.status(500).json(error)
 	}
 }
@@ -155,4 +220,6 @@ module.exports = {
 	getUserById,
 	activateAccount,
 	updateUser,
+	recoveryPassword,
+	setNewPassword
 };

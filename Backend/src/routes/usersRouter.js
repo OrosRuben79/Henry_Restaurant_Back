@@ -7,6 +7,8 @@ const {
   delteUser,
 	activateAccount,
 	updateUser,
+	recoveryPassword,
+	setNewPassword,
 } = require("../controllers/usersContoller");
 const { existsEmail, existsUserById } = require("../helpers/db-validators");
 const { validatorMiddlewere } = require("../middlewares/validator-middleweres");
@@ -14,6 +16,10 @@ const { validatorMiddlewere } = require("../middlewares/validator-middleweres");
 const router = Router();
 
 router.get("/activateAccount", activateAccount);
+
+router.post("/recoveryPassword", recoveryPassword);
+
+router.post("/setNewPassword", setNewPassword);
 
 router.get("/", getUser);
 

@@ -5,17 +5,17 @@ const User = require("../models/user");
 
 const login = async (req, res) => {
 	const { email, password } = req.body;
-
+	console.log("body...", req.body);
 	try {
 		//check if email exist
 		const user = await User.findOne({ email });
+		console.log("user", user);
 		if (!user) return res.status(404).json("User not found")
+		if(user.google) return res.status(404).json("Tu correo esta asociado a un inicio de sesion con un tercero como Google o Github")
 		if (user) {
 			const validPassword = bcryptjs.compareSync(password, user.password);
 			if (!validPassword) {
-				return res.status(400).json({
-					msg: "Usuario / Password not rigth 3"
-				});
+				return res.status(400).json("Usuario / Password not rigth 3");
 			}
 			// Generar el JWT
 			const token = await generateJWT(user.id);
@@ -87,8 +87,8 @@ const userData = async (req, res = response) => {
 }
 
 const loginGithub = async (req, res) => {
-	const email = req.body.email
-	console.log("login github", email);
+	const { email, thirdAuth, img } = req.body.userData
+	console.log("body login github", req.body.userData);
 	try {
 		const findUser = await User.findOne({ email });
 		// Valido si ya esta autenticado con usuario y contraseña
@@ -104,8 +104,10 @@ const loginGithub = async (req, res) => {
 				fullName: "User from GitHub",
 				email,
 				password: "noPasword",
-				thirdAuth: "GitHub",
-				rol: 'USER_ROLE'
+				thirdAuth,
+				rol: 'USER_ROLE',
+				google: true,
+				img
 			}
 			const createUser = await User.create(dataUser);
 			const token = await generateJWT(createUser._id);
@@ -118,9 +120,46 @@ const loginGithub = async (req, res) => {
 	}
 }
 
+const loginGoogle = async (req, res) => {
+	console.log("body login google", req.body.dataUser);
+	const { email, fullName, thirdAuth, img } = req.body.userData
+	try {
+		const findUser = await User.findOne({ email });
+		// Valido si ya esta autenticado con usuario y contraseña
+		console.log("Usuario encontrado", findUser);
+		if (findUser && findUser.thirdAuth === "") return res.status(400).json(`Tu email ${email} ya esta registrado, inicia sesion con tu cuenta de usuario y contraseña`)
+
+		// Si ya tiene autenticacion de un tercero devuelvo un token
+		if (findUser?.thirdAuth) {
+			const token = await generateJWT(findUser._id, findUser.thirdAuth)
+			return res.status(200).json(token)
+		} else {
+			//Si no esta registrado se procede a crear el usuario en db 
+			const dataUser = {
+				fullName,
+				email,
+				password: "noPasword",
+				thirdAuth,
+				rol: 'USER_ROLE',
+				google: true,
+				img
+			}
+			const createUser = await User.create(dataUser);
+			console.log("usercreated", createUser);
+			const token = await generateJWT(createUser._id);
+
+			return res.status(201).json(token); 
+		}
+	} catch (error) {
+		console.log("Error on login user third provider", error);
+		return res.status(500).json(error)
+	}
+}
+
 module.exports = {
 	login,
 	googleSingIn,
 	userData,
 	loginGithub,
+	loginGoogle
 };
