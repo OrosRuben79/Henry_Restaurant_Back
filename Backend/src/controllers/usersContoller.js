@@ -4,6 +4,10 @@ const { generateJWT } = require("../helpers/generate-jwt");
 const cloudinary = require("cloudinary").v2;
 cloudinary.config(process.env.CLOUDINARY_URL);
 const User = require("../models/user");
+const Admin = require("../models/admin");
+
+
+
 
 const URL_SERVER = process.env.URL_SERVER || "http://localhost:3001/users/";
 const URL_CLIENT = process.env.URL_CLIENT || "http://localhost:3000/";
@@ -114,39 +118,61 @@ const delteUser = async (req, res) => {
 };
 
 const getUserById = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const findUser = await User.findById(id);
 
-    return findUser
-      ? res.json(findUser)
-      : res.status(404).json("Usuario no encontrado");
-  } catch (error) {
-    console.log("Error on trying get user by id", error);
-    return res.status(500).json(error);
-  }
-};
+	const { id } = req.params;
+	try {
+		const findUser = await User.findById(id)
+
+		return findUser
+			? res.json(findUser)
+			: res.status(404).json("User not found")
+
+	} catch (error) {
+		console.log("Error on trying get user by id", error);
+		return res.status(500).json(error)
+	}
+
+}
 
 const activateAccount = async (req, res) => {
-  const token = req.query.token;
-  try {
-    const decodeToken = JSON.parse(
-      Buffer.from(token.split(".")[1], "base64").toString()
-    );
+	const token = req.query.token;
+	try {
+		const decodeToken = JSON.parse(
+			Buffer.from(token.split(".")[1], "base64").toString()
+		);
+			const userid = await User.findById({ _id: decodeToken.id })
 
-    const activateUser = await User.findOneAndUpdate(
-      { _id: decodeToken.id },
-      { state: true },
-      { returnOriginal: false }
-    );
+		if(userid){
+			const activateUser = await User.findOneAndUpdate(
+				{ _id: decodeToken.id },
+				{ state: true },
+				{ returnOriginal: false }
+			);
+	
+			return activateUser
+				? res.redirect(`${URL_CLIENT}perfil`)
+				: res.status(400).json("No se pudo activar cuenta")
+		}
 
-    return activateUser
-      ? res.redirect(`${URL_CLIENT}perfil`)
-      : res.status(400).json("No se pudo activar cuenta");
-  } catch (error) {
-    console.log("Error en controller usuario al activar cuenta", error);
-    return res.status(500).json(error);
-  }
+		const adminid = await Admin.findById({ _id: decodeToken.id })
+
+		if(adminid){
+			const activateAdmin = await Admin.findOneAndUpdate(
+				{ _id: decodeToken.id },
+				{ state: true },
+				{ returnOriginal: false }
+			);
+	
+			return activateAdmin
+				? res.redirect(`${URL_CLIENT}dashboard`)
+				: res.status(400).json("No se pudo activar cuenta")
+		}
+
+	} catch (error) {
+		console.log("Error en controller usuario al activar cuenta", error);
+		return res.status(500).json(error);
+	}
+
 };
 
 const updateUser = async (req, res) => {
