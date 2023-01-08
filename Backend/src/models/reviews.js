@@ -16,7 +16,7 @@ const ReviewsSchema = Schema({
   },
   reviewsDate: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
   score: {
     type: Number,

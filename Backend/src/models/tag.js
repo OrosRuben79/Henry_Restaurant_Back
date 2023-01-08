@@ -30,8 +30,6 @@ const TagSchema = Schema({
         required: true,
       },
 
-
-
 });
 
 module.exports = model("Tag", TagSchema);

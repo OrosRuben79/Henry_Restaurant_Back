@@ -15,6 +15,7 @@ router.post('/',[
    check("userId").custom(userIDValidator),
    check("foodId", "No es un ID valido").isMongoId(),
    check("foodId").custom(foodIDValidator),
+   check("descriptions", "descriptions requerido").not().isEmpty(),
    check("score", "score requerido").not().isEmpty(),
    check("score").custom(scoreValidator),
    validatorMiddlewere

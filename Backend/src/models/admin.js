@@ -14,10 +14,20 @@ const AdminSchema = Schema({
         required: [true, 'El correo es obligatorio'],
         unique: true
     },
+    rol: {
+        type: String,
+        required: true,
+        enum: ['ADMIN_ROLE', 'VIP_ROLE', 'WAITER_ROLE', 'COOK_ROLE', 'CASHIER_ROLE']
+    },
+    img: {
+        type: String
+    },
+    country:{
+        type: String
+    },
     state: {
         type: Boolean,
-        default: true,
-        required: true
+        default: true
     },
 
 });
