@@ -5,7 +5,7 @@ const existsEmail = async( email = '') => {
 
 
     // check if email exists
-    const existsEmail = await User.findOne({ email });
+    const existsEmail = await User.findOne({ email, state: true});
     if ( existsEmail ){
         throw new Error(`Email are registred!! are need unique`)
     }
