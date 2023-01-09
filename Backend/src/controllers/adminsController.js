@@ -10,8 +10,11 @@ const URL_CLIENT = process.env.URL_CLIENT || "http://localhost:3000/";
 const getAdmins = async (req, res) => {
 
   try {
-    const admin = await Admin.find();
-    res.status(200).json(admin);
+    const {states} = req.body
+    
+      const admin = await Admin.find( );
+      res.status(200).json(admin); 
+    
   } catch (error) {
     res.status(400).json({ msg: error });
   }

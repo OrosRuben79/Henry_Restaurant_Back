@@ -14,7 +14,7 @@ const URL_CLIENT = process.env.URL_CLIENT || "http://localhost:3000/";
 
 const getUser = async (req, res) => {
   try {
-    const users = await User.find({state: true});
+    const users = await User.find({state});
     res.json(users);
   } catch (error) {
     res.status(400).json({ msg: error });
