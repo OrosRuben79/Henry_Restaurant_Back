@@ -12,7 +12,7 @@ const login = async (req, res) => {
 		//check if email exist
 		const admin = await Admin.findOne({ email });
 		
-		const user = await User.findOne({ email });
+		const user = await User.findOne({ email, state:true });
 
 		if (admin) {
 			
