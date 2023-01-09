@@ -119,7 +119,7 @@ const deleteFoods = async (req, res) => {
 
     const foods = await Food.findByIdAndUpdate(id, { state: false });
 
-    return res.json(foods);
+    res.status(200).json(foods);
   } catch (error) {
     res.status(400).json("soy el error");
   }
