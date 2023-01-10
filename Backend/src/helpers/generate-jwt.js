@@ -19,12 +19,20 @@ const generateJWT = ( id = '' ) =>{
         })
 
     })
+}
 
-
+const verifyToken = (token) => {
+	try {
+		const validate = jwt.verify(token, process.env.SECRETORPRIVATEKEY)
+		return validate
+	} catch (error) {
+		return false
+	}
 }
 
 module.exports = {
-    generateJWT
+    generateJWT,
+		verifyToken
 }
 
 
