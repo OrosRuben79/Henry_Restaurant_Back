@@ -14,7 +14,7 @@ const URL_CLIENT = process.env.URL_CLIENT || "http://localhost:3000/";
 
 const getUser = async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.find({state: true});
     res.json(users);
   } catch (error) {
     res.status(400).json({ msg: error });
@@ -23,19 +23,32 @@ const getUser = async (req, res) => {
 
 const postUser = async (req, res) => {
   try {
-    const { fullName, email, password, img, country } = req.body;
-
-    const findUser = await User.findOne({ email });
-    if (findUser)
-      return res.status(400).json("Usuario ya existe " + findUser._id);
-
+    const { fullName, email, password, country } = req.body;
+    
     const salt = bcryptjs.genSaltSync();
     const cripPasworrd = bcryptjs.hashSync(password, salt);
+
+    const findUser = await User.findOne({ email });
+    if (findUser&& findUser.state){
+      return res.status(400).json("Usuario ya existe " + findUser._id);
+    }
+    
+    if(findUser){
+      const reactivate = await User.findByIdAndUpdate(findUser._id,{
+        state: true,
+        fullName,
+        country,
+        password: cripPasworrd
+      })
+      const token = await generateJWT(reactivate._id, reactivate.state);
+      return res.status(201).json(token)
+    }
+
     const user = await User.create({
       fullName,
       email,
       password: cripPasworrd,
-      img,
+      img: "",
       rol: "USER_ROLE",
       country,
       state: false,
@@ -105,10 +118,10 @@ const delteUser = async (req, res) => {
     const { id } = req.params;
 
     //Fisicamente lo borramos
-    const user = await User.findByIdAndDelete(id);
+    //const user = await User.findByIdAndDelete(id);
 
     // Borrador logico
-    // const user = await User.findByIdAndUpdate(id, { status: false });
+    const user = await User.findByIdAndUpdate(id, {state: false})
 
     res.json(user);
   } catch (error) {
