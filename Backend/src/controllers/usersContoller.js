@@ -20,6 +20,14 @@ const getUser = async (req, res) => {
     res.status(400).json({ msg: error });
   }
 };
+const geAlltUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (error) {
+    res.status(400).json({ msg: error });
+  }
+};
 
 const postUser = async (req, res) => {
   try {
@@ -295,5 +303,6 @@ module.exports = {
   updateUser,
 	recoveryPassword,
 	setNewPassword,
-  deleteImgUser
+  deleteImgUser,
+  geAlltUsers
 };
