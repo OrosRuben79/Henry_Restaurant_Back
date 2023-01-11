@@ -228,6 +228,23 @@ const updateUser = async (req, res) => {
   }
 };
 
+const updateUserFromAdmin = async (req, res) => {
+	const { _id, fullName, email, rol } = req.body
+	
+	try {
+		const updateUser = await User.findOneAndUpdate(
+			{ _id },
+			{ fullName, email, rol },
+			{ returnOriginal: false }
+		)
+		
+		res.status(201).json(updateUser)
+	} catch (error) {
+		console.log("Error controller update user from admin panel", error);
+		return res.status(500).json(error)
+	}
+}
+
 const recoveryPassword = async (req, res) => {
 	const { email } = req.body;
 	if (!email) return res.status(400).json("Correo no identificado");
@@ -304,5 +321,6 @@ module.exports = {
 	recoveryPassword,
 	setNewPassword,
   deleteImgUser,
+	updateUserFromAdmin,
   geAlltUsers
 };
