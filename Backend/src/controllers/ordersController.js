@@ -8,7 +8,7 @@ const getOrders = async (req, res) => {
 	try {
 		const order = await Order.find({state: true})
 			.populate('userid', ['fullName', "rol"])
-			.populate('order', ['lenguage', "img", "price"])
+			.populate('order', ['lenguage', "img", "price", "date"])
 		res.status(200).json(order);
 	} catch (error) {
 		res.status(400).json({ msg: error });

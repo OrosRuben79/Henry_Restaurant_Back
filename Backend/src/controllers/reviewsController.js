@@ -37,6 +37,7 @@ const postReviews = async (req, res) => {
   try {
     res.status(200).json(review);
   } catch (error) {
+    console.log(error)
     res.status(400).json({ msg: error });
   }
 };

@@ -115,7 +115,7 @@ const loginGithub = async (req, res) => {
 		if (findUser && !findUser.thirdAuth) return res.status(400).json(`Tu email ${email} ya esta registrado, inicia sesion con tu cuenta de usuario y contraseña`)
 
 		// Si ya tiene autenticacion de un tercero devuelvo un token
-		if (findUser?.thirdAuth) {
+		if (findUser.thirdAuth) {
 			const token = await generateJWT(findUser._id, findUser.thirdAuth)
 			return res.status(200).json(token)
 		} else {
