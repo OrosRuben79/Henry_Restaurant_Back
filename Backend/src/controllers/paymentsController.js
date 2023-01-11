@@ -22,7 +22,7 @@ const paymentWithStripe = async (req, res) => {
 
 		return res.json({message: "Succesfull payment"})
 	} catch (error) {
-		if(error?.raw?.message){
+		if(error.raw.message){
 			console.log("Card rejected by Stripe", error.raw.message);
 			return res.status(400).json(error.raw.message)
 		} else {

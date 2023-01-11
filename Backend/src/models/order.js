@@ -38,9 +38,10 @@ const OrderSchema = Schema({
 	valuePaid: {
 		type: Number,
 	},
-	date: {
-		type: String,
-	}
+  date: {
+    type: Date,
+    default: Date.now
+  },
 });
 
 module.exports = model("Order", OrderSchema);

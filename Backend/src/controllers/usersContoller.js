@@ -20,18 +20,25 @@ const getUser = async (req, res) => {
     res.status(400).json({ msg: error });
   }
 };
+const geAlltUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (error) {
+    res.status(400).json({ msg: error });
+  }
+};
 
 const postUser = async (req, res) => {
   try {
-    const { fullName, email, password, country } = req.body;
-    
-    const salt = bcryptjs.genSaltSync();
-    const cripPasworrd = bcryptjs.hashSync(password, salt);
+    const { fullName, email, password, country, registerDate } = req.body;
 
     const findUser = await User.findOne({ email });
     if (findUser&& findUser.state){
       return res.status(400).json("Usuario ya existe " + findUser._id);
     }
+    const salt = bcryptjs.genSaltSync();
+    const cripPasworrd = bcryptjs.hashSync(password, salt);
     
     if(findUser){
       const reactivate = await User.findByIdAndUpdate(findUser._id,{
@@ -52,6 +59,7 @@ const postUser = async (req, res) => {
       rol: "USER_ROLE",
       country,
       state: false,
+      registerDate
     });
 
     const token = await generateJWT(user._id, user.state);
@@ -189,7 +197,7 @@ const activateAccount = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const { fullName, password, country, city, address } = req.body;
+  const { fullName, password, country, city, address, registerDate } = req.body;
   const id = req.params;
   try {
     const findUser = await User.findById({ _id: id.id });
@@ -198,7 +206,7 @@ const updateUser = async (req, res) => {
     if (findUser.google) {
       const user = await User.findOneAndUpdate(
         { _id: id.id },
-        { fullName, country, city, address },
+        { fullName, country, city, address, registerDate },
         { returnOriginal: false }
       );
       return res.json(user);
@@ -210,7 +218,7 @@ const updateUser = async (req, res) => {
       if (!validatePassword) return res.status(404).json("password invalid");
       const user = await User.findOneAndUpdate(
         { _id: id.id },
-        { fullName, country, city, address },
+        { fullName, country, city, address, registerDate },
         { returnOriginal: false }
       );
 
@@ -316,4 +324,5 @@ module.exports = {
 	setNewPassword,
   deleteImgUser,
 	updateUserFromAdmin,
+  geAlltUsers
 };
