@@ -10,6 +10,7 @@ const {
 	recoveryPassword,
 	setNewPassword,
   deleteImgUser,
+	updateUserFromAdmin,
 } = require("../controllers/usersContoller");
 const { existsEmail, existsUserById } = require("../helpers/db-validators");
 const { validatorMiddlewere } = require("../middlewares/validator-middleweres");
@@ -21,6 +22,8 @@ router.get("/activateAccount", activateAccount);
 router.post("/recoveryPassword", recoveryPassword);
 
 router.post("/setNewPassword", setNewPassword);
+
+router.post("/updateFromAdmin", updateUserFromAdmin);
 
 router.get("/", getUser);
 

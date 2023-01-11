@@ -20,7 +20,8 @@ const getAdmins = async (req, res) => {
 const getAdminById = async (req, res) => {
   const {id} = req.params
   try {
-    const findAdmin = await Admin.findById(id, {state: true});
+    const findAdmin = await Admin.findById(id);
+		
     return findAdmin
     ? res.json(findAdmin)
     : res.status(404).json("Admin not found")
