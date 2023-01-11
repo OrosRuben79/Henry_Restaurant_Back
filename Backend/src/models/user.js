@@ -34,6 +34,10 @@ const UserSchema = Schema({
 		thirdAuth: {
 			type: String,
 		},
+    registerDate: {
+        type: Date,
+        default: Date.now
+    },
     country:{
         type: String
     },

@@ -23,7 +23,7 @@ const getUser = async (req, res) => {
 
 const postUser = async (req, res) => {
   try {
-    const { fullName, email, password, img, country } = req.body;
+    const { fullName, email, password, img, country, registerDate } = req.body;
 
     const findUser = await User.findOne({ email });
     if (findUser)
@@ -39,6 +39,7 @@ const postUser = async (req, res) => {
       rol: "USER_ROLE",
       country,
       state: false,
+      registerDate
     });
 
     const token = await generateJWT(user._id, user.state);
@@ -176,7 +177,7 @@ const activateAccount = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const { fullName, password, country, city, address } = req.body;
+  const { fullName, password, country, city, address, registerDate } = req.body;
   const id = req.params;
   try {
     const findUser = await User.findById({ _id: id.id });
@@ -185,7 +186,7 @@ const updateUser = async (req, res) => {
     if (findUser.google) {
       const user = await User.findOneAndUpdate(
         { _id: id.id },
-        { fullName, country, city, address },
+        { fullName, country, city, address, registerDate },
         { returnOriginal: false }
       );
       return res.json(user);
@@ -197,7 +198,7 @@ const updateUser = async (req, res) => {
       if (!validatePassword) return res.status(404).json("password invalid");
       const user = await User.findOneAndUpdate(
         { _id: id.id },
-        { fullName, country, city, address },
+        { fullName, country, city, address, registerDate },
         { returnOriginal: false }
       );
 
