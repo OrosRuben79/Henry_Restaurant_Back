@@ -37,6 +37,8 @@ const postUser = async (req, res) => {
     if (findUser&& findUser.state){
       return res.status(400).json("Usuario ya existe " + findUser._id);
     }
+    const salt = bcryptjs.genSaltSync();
+    const cripPasworrd = bcryptjs.hashSync(password, salt);
     
     if(findUser){
       const reactivate = await User.findByIdAndUpdate(findUser._id,{
