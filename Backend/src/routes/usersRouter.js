@@ -10,6 +10,8 @@ const {
 	recoveryPassword,
 	setNewPassword,
   deleteImgUser,
+	updateUserFromAdmin,
+  geAlltUsers
 } = require("../controllers/usersContoller");
 const { existsEmail, existsUserById } = require("../helpers/db-validators");
 const { validatorMiddlewere } = require("../middlewares/validator-middleweres");
@@ -17,10 +19,13 @@ const { validatorMiddlewere } = require("../middlewares/validator-middleweres");
 const router = Router();
 
 router.get("/activateAccount", activateAccount);
+router.get("/allUsers", geAlltUsers);
 
 router.post("/recoveryPassword", recoveryPassword);
 
 router.post("/setNewPassword", setNewPassword);
+
+router.post("/updateFromAdmin", updateUserFromAdmin);
 
 router.get("/", getUser);
 
@@ -43,6 +48,7 @@ router.put(
   "/:id",
   [
     check("id", "Is not ID valid").isMongoId(),
+    check("registerDate", "Is not Date valid").isDate(),
     check("id").custom(existsUserById),
     validatorMiddlewere,
   ],
