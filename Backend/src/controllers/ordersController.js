@@ -6,7 +6,7 @@ const { calculateOrderAmount } = require('./paymentsController')
 const getOrders = async (req, res) => {
 
 	try {
-		const order = await Order.find()
+		const order = await Order.find({state: true})
 			.populate('userid', ['fullName', "rol"])
 			.populate('order', ['lenguage', "img", "price", "date"])
 		res.status(200).json(order);
@@ -20,7 +20,7 @@ const getOrdersUserid = async (req, res) => {
 	try {
 		const { id } = req.params
 
-		const order = await Order.find({ 'userid': id }).populate('order');
+		const order = await Order.find({ 'userid': id , state: true}).populate('order');
 		return res.status(200).json(order);
 
 	} catch (error) {

@@ -13,7 +13,7 @@ const getReviews = async (req, res) => {
      return res.status(200).json(review);
     }
 
-   const review = await Reviews.find()
+   const review = await Reviews.find({state: true})
 
   return res.status(200).json(review);
   } catch (error) {

@@ -10,7 +10,7 @@ const URL_CLIENT = process.env.URL_CLIENT || "http://localhost:3000/";
 const getAdmins = async (req, res) => {
 
   try {
-    const admin = await Admin.find();
+    const admin = await Admin.find({state: true});
     res.status(200).json(admin);
   } catch (error) {
     res.status(400).json({ msg: error });
@@ -20,7 +20,7 @@ const getAdmins = async (req, res) => {
 const getAdminById = async (req, res) => {
   const {id} = req.params
   try {
-    const findAdmin = await Admin.findById(id);
+    const findAdmin = await Admin.findById(id, {state: true});
     return findAdmin
     ? res.json(findAdmin)
     : res.status(404).json("Admin not found")

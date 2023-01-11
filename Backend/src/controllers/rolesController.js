@@ -3,7 +3,7 @@ const Role = require("../models/role");
 const getRoles = async (req, res) => {
 
   try {
-    const roles = await Role.find();
+    const roles = await Role.find({state: true});
     res.status(200).json(roles);
   } catch (error) {
     res.status(400).json({ msg: error });

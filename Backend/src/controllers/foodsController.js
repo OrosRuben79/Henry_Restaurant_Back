@@ -9,7 +9,7 @@ const getFoods = async (req, res) => {
 
     if (name) {
       const food = await Food.find({
-        "lenguage.en.name": { $regex: "^\\b" + name.toUpperCase() },
+        "lenguage.en.name": { $regex: "^\\b" + name.toUpperCase() }, state: true
       }).populate("adminid", "name");
       return res.status(200).json(food);
     }
@@ -17,7 +17,7 @@ const getFoods = async (req, res) => {
     // country, food, fit
     if (country && food && fit) {
       const foods = await Food.find({
-        "tags.en": { $all: [country, food, fit] },
+        "tags.en": { $all: [country, food, fit] }, state: true
       });
       return res.status(200).json(foods);
     }
@@ -25,7 +25,7 @@ const getFoods = async (req, res) => {
     // country, food
     if (country && food) {
       const foods = await Food.find({
-        "tags.en": { $all: [country, food] },
+        "tags.en": { $all: [country, food] }, state: true
       });
       return res.status(200).json(foods);
     }
@@ -33,7 +33,7 @@ const getFoods = async (req, res) => {
     // country, fit
     if (country && fit) {
       const foods = await Food.find({
-        "tags.en": { $all: [country, fit] },
+        "tags.en": { $all: [country, fit] },state: true
       });
       return res.status(200).json(foods);
     }
@@ -41,33 +41,33 @@ const getFoods = async (req, res) => {
     // food, fit
     if (food && fit) {
       const foods = await Food.find({
-        "tags.en": { $all: [food, fit] },
+        "tags.en": { $all: [food, fit] },state: true
       });
       return res.status(200).json(foods);
     }
     // country
     if (country) {
       const foods = await Food.find({
-        "tags.en": { $all: [country] },
+        "tags.en": { $all: [country] }, state: true
       });
       return res.status(200).json(foods);
     }
     // food
     if (food) {
       const foods = await Food.find({
-        "tags.en": { $all: [food] },
+        "tags.en": { $all: [food] }, state: true
       });
       return res.status(200).json(foods);
     }
     // fit
     if (fit) {
       const foods = await Food.find({
-        "tags.en": { $all: [fit] },
+        "tags.en": { $all: [fit] }, state: true
       });
       return res.status(200).json(foods);
     }
 
-    const foods = await Food.find().populate("adminid", "name");
+    const foods = await Food.find({state: true}).populate("adminid", "name");
     // .populate('reviewid', ['reviews', 'score', 'descriptions'])
     // console.log(foods)
     return res.status(200).json(foods);
@@ -78,9 +78,7 @@ const getFoods = async (req, res) => {
 
 const postFoods = async (req, res) => {
   try {
-    const { tempFilePath } = req.files.file;
-    const { img } = await cloudinary.uploader.upload(tempFilePath);
-
+  
     const { adminid, price, tags, lenguage } = req.body;
 
     lenguage.en.name = lenguage.en.name.toUpperCase();
@@ -91,7 +89,7 @@ const postFoods = async (req, res) => {
       price,
       tags,
       lenguage,
-      img,
+      img: "",
     });
 
     res.status(200).json(foods);
@@ -113,6 +111,34 @@ const putFoods = async (req, res) => {
   }
 };
 
+const updateImg = async (req,res)=>{
+
+  try {
+    const {id} = req.params
+    const food = await Food.findById(id)
+
+       // si comida ya tiene imagen guardada en cloudinary borrar la anterior para guardar la nueva
+       const validate = food.img.split("/")[2];
+       if (validate === "res.cloudinary.com") {
+         const nameArr = food.img.split("/");
+         const name = nameArr[nameArr.length - 1];
+         const [public_id] = name.split(".");
+         await cloudinary.uploader.destroy(public_id);
+       }
+
+    const { tempFilePath } = req.files.file;
+    const { secure_url } = await cloudinary.uploader.upload(tempFilePath);
+    
+    const updateFood = await Food.findByIdAndUpdate(id, {img: secure_url })
+
+
+    res.status(200).json(updateFood);
+  } catch (error) {
+    res.status(400).json({ msg: error });
+  }
+
+}
+
 const deleteFoods = async (req, res) => {
   try {
     const { id } = req.params;
@@ -130,4 +156,5 @@ module.exports = {
   postFoods,
   putFoods,
   deleteFoods,
+  updateImg
 };
