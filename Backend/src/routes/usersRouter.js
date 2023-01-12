@@ -48,7 +48,6 @@ router.put(
   "/:id",
   [
     check("id", "Is not ID valid").isMongoId(),
-    check("registerDate", "Is not Date valid").isDate(),
     check("id").custom(existsUserById),
     validatorMiddlewere,
   ],
