@@ -78,15 +78,15 @@ const postOrders = async (req, res) => {
 
 
 const putOrders = async (req, res) => {
+	const { _id, stateOrder } = req.body;
 	try {
-		const { id } = req.params;
-		const { state, ...resto } = req.body;
-
-		const orders = await Order.findByIdAndUpdate(id, resto);
-
-		res.status(200).json(orders);
+		await Order.findByIdAndUpdate({_id}, {stateOrder}, { returnOriginal: false});
+		
+		const listOrders = await Order.find()
+		res.status(201).json(listOrders);
 	} catch (error) {
-		res.status(400).json({ msg: error });
+		console.log("Error on update order", error);
+		res.status(500).json({ msg: error });
 	}
 
 };
