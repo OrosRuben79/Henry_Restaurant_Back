@@ -156,6 +156,64 @@ const mailToRecoveryPassword = async (email, name, urlClient) => {
 	
 };
 
+const mailDispatchOrder = async (email, name, urlClient) => {
+	try {
+		await transporter.sendMail({
+			from: "PF-Henry <devapps2211@gmail.com>",
+			to: email,
+			subject: "Ya enviamos tu pedido",
+			html: `
+				<h2>Hola ${name}</h2>
+				<h4>Hemos enviado tu pedido</h4>
+				<hr />
+				<div>
+				<p>Muy pronto estara llegando a tu domicilio el pedido que hiciste en nuestro restaurante</p>
+				<div style="display: flex; justify-content: center;">
+					<img src"https://i.pinimg.com/originals/ae/5d/5a/ae5d5a0ca307f817a1d7df06a90cbbe7.gif" alt="Envio pedido"/>
+					
+				</div>
+				<hr />
+				<h3>Atentamente</h3>
+				<p>Tus amigos de HenryFoods!!!</p>
+				</div>        
+			`,
+		});	
+	} catch (error) {
+		console.log("Error en nodemailer send mail dispatch order", error);
+		return error
+	}
+	
+};
+const mailOrderDelivered = async (email, name, urlClient) => {
+	try {
+		await transporter.sendMail({
+			from: "PF-Henry <devapps2211@gmail.com>",
+			to: email,
+			subject: "Tu pedido ha sido entregado 😋",
+			html: `
+				<h2>Hola ${name}</h2>
+				<h4>Gracias por comprar en nuestro sitio</h4>
+				<p>Si tienes un inconveniente con tu pedido no dudes en contactarnos</p>
+				<hr />
+				<div>
+				<p>Que disfrutes tu pedido y buen provecho</p>
+				<div style="display: flex; justify-content: center;">
+					<img src"https://media.tenor.com/xqQqNiIh4zgAAAAM/happy-food.gif" alt="A comer!!"/>
+					
+				</div>
+				<hr />
+				<h3>Atentamente</h3>
+				<p>Tus amigos de HenryFoods!!!</p>
+				</div>        
+			`,
+		});	
+	} catch (error) {
+		console.log("Error en nodemailer send mail dispatch order", error);
+		return error
+	}
+	
+};
+
 module.exports = {
 	transporter,
 	mailActivateAccount,
@@ -163,5 +221,7 @@ module.exports = {
 	mailOrderAtTable,
 	mailConfirmReservation,
 	mailToRecoveryPassword,
+	mailDispatchOrder,
+	mailOrderDelivered
 
 }
