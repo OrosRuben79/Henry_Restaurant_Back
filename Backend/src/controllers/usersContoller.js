@@ -172,7 +172,7 @@ const activateAccount = async (req, res) => {
 	
 			return activateUser
 				? res.redirect(`${URL_CLIENT}perfil`)
-				: res.status(400).json("No se pudo activar cuenta")
+				: res.status(400).json("Failed to activate account")
 		}
 
 		const adminid = await Admin.findById({ _id: decodeToken.id })
@@ -186,11 +186,11 @@ const activateAccount = async (req, res) => {
 	
 			return activateAdmin
 				? res.redirect(`${URL_CLIENT}dashboard`)
-				: res.status(400).json("No se pudo activar cuenta")
+				: res.status(400).json("Failed to activate account")
 		}
 
 	} catch (error) {
-		console.log("Error en controller usuario al activar cuenta", error);
+		console.log("Error in user controller when activating account", error);
 		return res.status(500).json(error);
 	}
 
@@ -201,7 +201,7 @@ const updateUser = async (req, res) => {
   const id = req.params;
   try {
     const findUser = await User.findById({ _id: id.id });
-    if (!findUser) return res.status(400).json("Usuario no encontrado");
+    if (!findUser) return res.status(400).json("User not found");
 
     if (findUser.google) {
       const user = await User.findOneAndUpdate(
@@ -249,14 +249,14 @@ const updateUserFromAdmin = async (req, res) => {
 
 const recoveryPassword = async (req, res) => {
 	const { email } = req.body;
-	if (!email) return res.status(400).json("Correo no identificado");
+	if (!email) return res.status(400).json("Email is not verified");
 	try {
 		const findUser = await User.findOne({ email });
 		console.log(findUser);
 		if (!findUser) {
 			return res.status(404).json({ message: `El correo ${email} no esta registrado ` });
 		} else if (findUser.google) {
-			return res.status(404).json({ message: "Tu solicitud no puede ser procesada debido a que estas autenticado con un tercero como Github o Google. Intenta iniciar sesion con alguno de estos servicios"})
+			return res.status(404).json({ message: "Your request cannot be processed because you are authenticated with a third party like Github or Google. Try to log in with one of these services"})
 		} else {
 			// Generar el JWT
 			const token = await generateJWT(findUser._id);
@@ -264,12 +264,12 @@ const recoveryPassword = async (req, res) => {
 			mailToRecoveryPassword(email, findUser.fullName, URL_CLIENT);
 
 			return res.status(200).json({
-				message: `Por favor revisa tu cuenta de correo ${email} para continuar el proceso de recuperacion de contraseña`,
+				message: `Please check your email account ${email} to continue the password recovery process`,
 				token,
 			});
 		}
 	} catch (error) {
-		console.log("Error controlador usuario recuperacion contraseña", error);
+		console.log("User controller error password recovery", error);
 		return res.status(500).json(error);
 	}
 };
@@ -283,13 +283,13 @@ const setNewPassword = async (req, res) => {
 		if (!checkToken) return res.status(400).json("Token invalido!!")
 
 		const findUser = await User.findOne({ _id: checkToken.id })
-		console.log("usuario encontrado", findUser);
+		// console.log("usuario encontrado", findUser);
 		if (!findUser) {
-			return res.status(404).json("Usuario no encontrado")
+			return res.status(404).json("User not found")
 		}
 
 		if (findUser.thirdAuth) {
-			return res.status(400).json("No se puede reestablecer tu contraseña porque estas registrado con un tercero como Github o Google, por favor inicia sesion con el proveedor que corresponda")
+			return res.status(400).json("Your password cannot be reset because you are registered with a third party such as Github or Google, please log in with the appropriate provider")
 		}
 
 		const salt = await bcryptjs.genSaltSync(10);
@@ -302,9 +302,9 @@ const setNewPassword = async (req, res) => {
 
 		console.log("user updated", user);
 		if (!user) {
-			return res.status(400).json("No se pudo actualizar tu contraseña, por favor intenta de nuevo")
+			return res.status(400).json("Could not update your password, please try again")
 		} else {
-			return res.status(200).json("Se ha cambiado la contraseña exitosamente")
+			return res.status(200).json("password changed successfully")
 		}
 	} catch (error) {
 		console.log("Error controller set new password", error);
