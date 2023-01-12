@@ -27,7 +27,7 @@ const OrderSchema = Schema({
   },
   stateOrder: {
     type: String,
-    enum: ["TERMINADO", "ENPROCESO", "RECHAZADO"],
+    enum: ["DESPACHADO", "ENPROCESO", "RECHAZADO", "ENTREGADO"],
     default: "ENPROCESO",
   },
   state: {
