@@ -89,7 +89,7 @@ const updateImgUser = async (req, res) => {
     // extraemos los archivo y los mandamos a cloudinary
    
     const { tempFilePath } = req.files.file;
-
+    
     const { secure_url } = await cloudinary.uploader.upload(tempFilePath);
     
 	// actulizamos la imagen del usuario en la base de datos con la url de cloudinary
