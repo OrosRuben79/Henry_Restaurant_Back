@@ -5,7 +5,7 @@ const router = Router();
 router.get('/', getOrders)
 router.get('/:id', getOrdersUserid)
 router.post('/', postOrders)
-router.put('/:id', putOrders)
+router.put('/', putOrders)
 router.delete('/:id', deleteOrders)
 
 module.exports = router
